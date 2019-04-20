@@ -1,0 +1,73 @@
+<div class="row" style="height: 100%">
+  <div class="col" style="padding:0">
+    <app-map></app-map>
+  </div>
+  <div class="col-3 side-bar">
+    <div class="container">
+      <br>
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger" (click)="remove()">Remove all</button>
+        <button type="button" class="btn btn-info" (click)="allPortsClick()">All Airports</button>
+      </div>
+      <!--single airport-->
+      <div *ngIf="activePort != null">
+        <blockquote class="twitter-tweet w-100"><span class="badge badge-danger">{{activePort.IATA}}</span>
+          <span class="badge badge-warning">{{activePort.tz}}</span>
+          <br>
+          <hr>
+          <span>{{activePort.name}}</span>
+          <br>
+          <span>{{activePort.continent}}, {{activePort.country}}, {{activePort.city}}</span>
+          <br>
+          <div class="btn-group">
+            <button type="button" class="btn badge badge-dark" (click)="allOut(activePort.IATA)">All Connections</button>
+            <button type="button" class="btn badge badge-primary" (click) = "longestClick()">longest</button>
+            <button type="button" class="btn badge badge-success" (click) = "shortestClick()">shortest</button>
+            <br>
+          </div>
+        </blockquote>
+        <blockquote *ngIf="planeList.length != 0" class="twitter-tweet w-100">
+          Available Flights: {{tempStart}} to {{tempEnd}}<br>
+          <span *ngFor="let p of planeList; let j = index" class="badge badge-warning" (mouseenter)="mouseOver(p)">{{p.flightNr}}</span>
+        </blockquote>
+        <blockquote class="twitter-tweet w-100 scroll">
+          <span>Search Connection: </span> <br>
+          <div class="input-group mb-3">
+            <input [(ngModel)]="end" type="text" class="form-control" placeholder="to: DUB"
+              aria-label="Example text with button addon" aria-describedby="button-addon1">
+            <input [(ngModel)]="step" class="form-control" placeholder="over: AMS"
+              aria-label="Example text with button addon" aria-describedby="button-addon1">
+            <button type="button" class="btn btn btn-dark" style="margin:0" (click)="getCon()">go</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-info" style="margin:0" (click)="getWorldTour()">WorldTour</button>
+          <hr>
+          <div class="sk-rotating-plane" *ngIf="isLoading"></div>
+          <blockquote *ngFor="let el of connectionList; let i = index" class="twitter-tweet w-100 scroll" 
+          [ngStyle]="{backgroundColor: hover==true  ? 'lightgrey' : 'black' }"
+            style="color: whitesmoke"
+            (click) ="getTracking(el.sourceAirport.IATA, el.destinationAirport.IATA)">
+            FROM: {{el.sourceAirport.name}} <br>
+            TO: {{el.destinationAirport.name}} <br>
+            FLOWN-BY: {{el.airline}} <br>
+            DISTANCE: {{el.distance}} 
+            <progress role="progressbar" class="progress-bar bg-dark" value="{{(el.distance/compDist)*100}}" max="100">
+            </progress>
+          </blockquote>
+        </blockquote>
+
+
+      </div>
+      <!--all airport-->
+      <div *ngIf="ports.length != 0" class="card-deck alert alert-light scroll">
+        <ul class="list-group">
+          <blockquote class="twitter-tweet" *ngFor="let el of ports" (mouseenter)="mouseOver(el)">{{el.IATA}}
+            <br>
+            <span>{{el.name}}</span>
+          </blockquote>
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+</div>
