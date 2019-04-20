@@ -97,9 +97,10 @@ def fillIndex(filePath: str, fillMapping: dict, indexName: str ):
     with open(filePath) as routes:
         for e in tqdm(routes):
             e_split = e.split(sep=',')
-            remove = "\N"
-            if remove in e_split: continue
-            else
+            remove = r"\N"
+            if e_split[4] == remove:
+                continue
+            else:
                 fillMap = {i: str(e_split[k]).replace('"','') for k, i in enumerate(fillMapping.keys())}
                 res = requests.post(esApiUrl + "/{}/_doc/".format(indexName), json=fillMap)
 
