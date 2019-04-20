@@ -3,7 +3,7 @@ from tqdm import tqdm
 
 # static vars
 
-esApiUrl = 'http://localhost:9200'
+esApiUrl = 'http://172.17.0.2:9200'
 
 
 # ROUTES
