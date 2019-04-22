@@ -3,7 +3,7 @@ import requests
 import json
 import re
 
-portApi = "http://localhost:9200/airports/_search?size=10000"
+portApi = "http://es01:9200/airports/_search?size=10000"
 
 class AirportCollection:
     def __init__(self):
