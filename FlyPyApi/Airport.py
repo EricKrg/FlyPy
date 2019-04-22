@@ -5,7 +5,7 @@ import re
 
 from collections import OrderedDict
 
-portApi = "http://localhost:9200/airports/"  # move this to config file
+portApi = "http://es01:9200/airports/"  # move this to config file
 
 class Airport:
     def __init__(self,default='',**kwargs):
