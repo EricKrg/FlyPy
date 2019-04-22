@@ -4,7 +4,7 @@ from FlyPyApi import Airport, Connection
 import requests
 import json
 
-conApi = 'http://localhost:9200/routes/'
+conApi = 'http://es01:9200/routes/'
 
 class RouteCollection:
     # an airport can have multiple connection going in out

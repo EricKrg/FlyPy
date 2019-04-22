@@ -4,12 +4,13 @@ import json
 import FlyPyApi as fly
 
 apiKey = 'da5a06-bc08c7'
+baseUrl = 'http://aviation-edge.com/v2/public/flights?key='
 #apiUrl = 'http://aviation-edge.com/v2/public/flights?key={}'.format(apiKey)
 
 class FlightTracker:
     def __init__(self, connection: fly.Connection):
         self.con = connection
-        self.apiUrl =  'http://aviation-edge.com/v2/public/flights?key={}'.format(apiKey)
+        self.apiUrl =  '{}{}'.format(baseUrl,apiKey)
         self.planeList = []
         self.requestFlight()
 

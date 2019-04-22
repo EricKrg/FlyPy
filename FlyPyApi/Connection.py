@@ -4,7 +4,7 @@ import requests
 import json
 import math
 
-conApi = 'http://localhost:9200/routes/'
+conApi = 'http://es01:9200/routes/'
 
 
 class Connection:
