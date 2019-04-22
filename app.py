@@ -7,6 +7,7 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
+
 def serialize(obj):  # gen. serializer
     """JSON serializer for objects not serializable by default json code"""
     if isinstance(obj, Connection):
@@ -109,8 +110,6 @@ class FlightTracker(Resource):
             return tracker.serialize_to_json(), 200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
-
-
 
 
 api.add_resource(Airport, '/airport/<string:name>')  # http://localhost:5000/item/Smartphone
