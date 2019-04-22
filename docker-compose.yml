@@ -27,7 +27,7 @@ services:
       ports:
         - "5000:5000"
       volumes:
-        - ./server:/usr/src/app/server
+        - ./server:/usr/src/app/serverf
       hostname: flask.service.intra
       networks:
         - esnet
