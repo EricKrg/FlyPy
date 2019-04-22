@@ -159,7 +159,7 @@ class Trip:
         print(directions)
 
     def getLiteRoundTrip(self, iata: str):
-        bigAirports = {"America":"JFK", "Europe":"LHR", "Asia": "PEK",
+        bigAirports = {"America":"JFK", "Europe":"LHR", "Asia": "PEK", "Atlantic":"KEF",
                        "Australia": "SYD", "Pacific":'HNL', 'Africa':'CPT'} # add pacific, australia and africa
         startPort = Airport(IATA=iata)
         worldtour = {}
@@ -177,11 +177,11 @@ class Trip:
         step = worldtour[len(worldtour)- 1]
 
         # start with a random direction
-        all_dir = [70, 90, 110, 250, 270, 290]
+        all_dir =[90,270] #[70, 90, 110, 250, 270, 290]
         directions = random.choice(all_dir)
         all_dir.remove(directions)
 
-        const = 0.8
+        const = 0.7
         notHome = True
         banList = []
         continentList = [startPort.continent]

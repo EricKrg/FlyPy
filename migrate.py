@@ -3,7 +3,7 @@ from tqdm import tqdm
 
 # static vars
 
-esApiUrl = 'http://172.17.0.2:9200'
+esApiUrl = 'http://localhost:9200'
 
 
 # ROUTES
@@ -102,7 +102,7 @@ def fillIndex(filePath: str, fillMapping: dict, indexName: str ):
                 continue
             else:
                 fillMap = {i: str(e_split[k]).replace('"','') for k, i in enumerate(fillMapping.keys())}
-                res = requests.post(esApiUrl + "/{}/_doc/".format(indexName), json=fillMap)
+                res = requests.post(esApiUrl + "/{}/doc/".format(indexName), json=fillMap)
 
 
 if __name__ == "__main__":

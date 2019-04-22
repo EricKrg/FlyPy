@@ -7,5 +7,6 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=node /FlyPy/frontend/FlyPyApp/dist/* .
 # Copy custom nginx config
-COPY ./nginx.conf /etc/nginx/nginx.conf
-EXPOSE 4200
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80 443

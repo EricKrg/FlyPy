@@ -205,6 +205,6 @@ class FlightTracker:
 
 
 if __name__ == "__main__":
-    con = fly.Connection("DRS","CGN")
+    con = fly.Connection("JFK","LAX")
     t = FlightTracker(con)
 

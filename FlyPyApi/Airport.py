@@ -102,8 +102,8 @@ class Airport:
 if __name__ == "__main__":
     d = Airport(default="Frankfurt")
     ld = d.all_out().longestFlight()
-    jsonLD=ld.serialze_to_json()
-    print(jsonLD)
+    #jsonLD=ld.serialze_to_json()
+    #print(jsonLD)
     testPort = Airport(IATA="EWR")
     port2 = Airport(name="Madang Airport")
     port = Airport(country="Germany")

@@ -1,3 +1,4 @@
 network.host: 0.0.0.0
 cluster.name: ES_Cluster_01
 node.name: "Cluster_01_Node_001"
+
