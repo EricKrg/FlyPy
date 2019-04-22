@@ -14,10 +14,11 @@ export class AppComponent {
     private route: ActivatedRoute,
     private dataFetcher: DataFetcherService
     ){}
-  title = 'FLyPy';
+  title = 'FlyPy';
 
   searchPort(searchString: string) {
     this.dataFetcher.findPorts(searchString).subscribe((res: exPort) => {
+      console.log(res)
       this.dataFetcher.activePos.emit(res)
     })
   }

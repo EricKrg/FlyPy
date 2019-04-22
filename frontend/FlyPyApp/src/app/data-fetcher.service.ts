@@ -10,15 +10,15 @@ import { LocatorService } from './locator.service';
 export class DataFetcherService {
   removeEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  allPorts: string = "allairports";
+  allPorts: string = "/api/allairports";
   allPortsResponse: EventEmitter<any> = new EventEmitter<any>();
 
   allInResponse: EventEmitter<any> = new EventEmitter<any>();
   allOutResponse: EventEmitter<any> = new EventEmitter<any>();
 
-  searchPort: String = "/airport/"
+  searchPort: String = "/api/airport/"
 
-  connection : string = "/connect"
+  connection : string = "/api/connect"
   connectionResponse: EventEmitter<any> = new EventEmitter<any>();
   
   longestCon: EventEmitter<any> = new EventEmitter<any>();
@@ -56,13 +56,13 @@ export class DataFetcherService {
   }
 
   getWorldTour(start:string): Observable<any> {
-    return this.http.get("/aroundtheworld/"+ start).pipe(
+    return this.http.get("/api/aroundtheworld/"+ start).pipe(
       map(res => res as JSON)
     )
   }
 
   requester(url: string, emitter: EventEmitter<any>) {
-    return this.http.get(url).pipe(
+    return this.http.get("/api/"+url).pipe(
       map(res => res as JSON)
     ).subscribe((res) => emitter.emit(res) )
   }

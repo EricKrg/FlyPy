@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
     console.log("All ports")
     this.ports = []
     this.dataFetcher.fetchAllPorts().subscribe((res) => {
-      console.log("res");
+      console.log(res);
       this.dataFetcher.allportEmitter(res)
       console.log("after emit")
       for (var key in res.all) {
