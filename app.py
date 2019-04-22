@@ -21,11 +21,14 @@ def serialize(obj):  # gen. serializer
 
 class Airport(Resource):
     def get(self, name: str):
-        port = fly.Airport(default=name)
-        if port.lat != '':
-            return port.__dict__, 200
-        else:
-            return {"message": "airport not found"}, 404
+        try:
+            port = fly.Airport(default=name)
+            if port.lat != '':
+                return port.__dict__, 200
+            else:
+                return {"message": "airport not found"}, 404
+        except Exception:
+            return {'message': 'oops something went wrong'}, 404
 
 
 class Airports(Resource):
