@@ -32,7 +32,7 @@
           <span *ngFor="let p of planeList; let j = index" class="badge badge-warning"
             (mouseenter)="mouseOver(p)">{{p.flightNr}}</span>
         </blockquote>
-        <blockquote *ngIf="connectionList.length != 0" class="twitter-tweet w-100">
+        <blockquote *ngIf="isConnection" class="twitter-tweet w-100">
           <span> Traveltime estimation:</span><hr>
           Local time at <span style="color: brown">{{activePort.IATA}} </span>:
            <i style="font-weight: normal"> {{timetable.start_time}} </i><br>

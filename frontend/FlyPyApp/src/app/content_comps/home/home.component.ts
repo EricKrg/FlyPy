@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataFetcherService } from 'src/app/data-fetcher.service';
 import { LocationData } from 'src/app/shared/locationData';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 
 export class Port {
   constructor(public name: String,
@@ -57,6 +58,7 @@ export class HomeComponent implements OnInit {
   connectionList: Connection[] = [];
   activePort: exPort;
   planeList: Plane[] = [];
+  isConnection: boolean = false
   constructor(
     private dataFetcher: DataFetcherService
   ) { }
@@ -72,6 +74,9 @@ export class HomeComponent implements OnInit {
     // longest route
     this.dataFetcher.longestCon.subscribe((res: Connection) => {
       let conList: Connection[] = [];
+      conList.push(res)
+      console.log(this.connectionList)
+      console.log(this.connectionList.length)
       this.compDist = this.compDist + res.distance
       this.dataFetcher.connectionResponse.emit(conList)
     })
@@ -131,6 +136,7 @@ export class HomeComponent implements OnInit {
     this.ports = []
     this.planeList = []
     this.activePort = null;
+    this.isConnection = false
   }
 
   allOut(iata: string) {
@@ -139,6 +145,7 @@ export class HomeComponent implements OnInit {
     this.dataFetcher.requester(url, this.dataFetcher.allOutResponse)
   }
   getCon() {
+    this.isConnection = true
     this.compDist = 0
     this.connectionList = []
     this.planeList = []
@@ -161,6 +168,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getWorldTour() {
+    this.isConnection = true
     this.compDist = 0
     this.connectionList = []
     this.isLoading = true;
@@ -183,13 +191,15 @@ export class HomeComponent implements OnInit {
     });
   }
   longestClick() {
+    this.isConnection = false
     this.compDist = 0
-    this.connectionList = []
+    //this.connectionList = []
     this.dataFetcher.requester("/connect/longest/" + this.activePort.IATA, this.dataFetcher.longestCon)
   }
   shortestClick() {
+    this.isConnection = false
     this.compDist = 0
-    this.connectionList = []
+    //this.connectionList = []
     this.dataFetcher.requester("/connect/shortest/" + this.activePort.IATA, this.dataFetcher.shortestCon)
   }
   getTracking(start: string, end: string) {
