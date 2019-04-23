@@ -6,6 +6,7 @@ import random
 import datetime
 import pytz
 
+
 class Trip:
     def __init__(self):
         self.startPort = ''
@@ -43,6 +44,36 @@ class Trip:
                     iterate = list(Airport(IATA=item).all_out().connectionSet)
                 continue
             i += 1
+
+    def connectionSearch2(self, start, end):
+        popList = Airport(IATA=start).all_out()
+
+        if end in popList.connectionSet:
+            return [start]
+        search = True
+
+        used = [];p_list = []; visited = []; used_pop = []; p =''
+        while search:
+            port = popList.connectionSet.pop()
+            if port not in visited:
+                port_out = Airport(IATA=port).all_out().connectionSet
+            else:
+                port_out = []
+            if end in port_out:
+                res = p_list + [port]
+                print(res)
+                return res
+            used.append(port)
+            visited.append(port)
+            visited = list(set(visited))
+            if len(popList.connectionSet) == 0:
+                p = used.pop()
+                used_pop.append(p)
+                popList = Airport(IATA=p).all_out()
+                p_list.append(p)
+                if len(used) == 0:
+                    popList= Airport(IATA= used_pop.pop()).all_out()
+
 
     def getFlightplan(self, start: str, end: str, steps: list):
         self.startPort = Airport(IATA=start)
@@ -88,7 +119,7 @@ class Trip:
         final_time = start.fromutc(start_time + datetime.timedelta(hours=time+wait_time)).astimezone(end)
         self.flightPlan["time"] = {"start_time": start.fromutc(start_time).strftime('%Y-%m-%d %H:%M:%S'),
                                    "end_time": final_time.strftime('%Y-%m-%d %H:%M:%S'),
-                                   "total_time": time + wait_time, "waiting_time": wait_time}
+                                   "total_time":round(time + wait_time,1), "waiting_time": wait_time}
 
     def getRoundTrip(self, iata: str):
         bigAirports = {"America":"JFK", "Europe":"LHR", "Asia": "PEK",
@@ -302,6 +333,17 @@ class Trip:
 
 if __name__=="__main__":
     t = Trip()
+    import time
+    start = time.time()
+    t.connectionSearch("DRS","ISC")
+    end = time.time()
+    print(end - start)
+    start2 = time.time()
+    t.connectionSearch2("DRS","ISC")
+    end2 = time.time()
+    print(end2 - start2)
+
+
     t.getFlightplan('LAX','DUB',steps=[])
     t.getTraveltime()
     res = t.serialize_to_json()

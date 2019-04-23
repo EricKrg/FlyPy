@@ -52,6 +52,7 @@ class Connection(Resource):
             steps = [] if len(steps) == 0 else steps.split(',')
             t = fly.Trip()
             t.getFlightplan(start, end, steps)
+            t.getTraveltime()
             return t.serialize_to_json(), 200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
@@ -106,10 +107,17 @@ class Shortest(Resource):
 class FlightTracker(Resource):
     def get(self):
         try:
-            start = request.args.get('start')
-            end = request.args.get('end')
-            con = fly.Connection(start,end)
-            tracker = fly.FlightTracker(con)
+            if 'start' in request.args.keys():
+                start = request.args.get('start')
+                end = request.args.get('end')
+                con = fly.Connection(start,end)
+                tracker = fly.FlightTracker(connection=con)
+            else:
+                fNr = request.args.get('fnr')
+                if len(fNr) < 4:
+                    return  {'message': 'fnr too short'}, 201
+                else:
+                    tracker = fly.FlightTracker(fNr=fNr)
             return tracker.serialize_to_json(), 200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
