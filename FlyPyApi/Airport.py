@@ -9,7 +9,7 @@ config.read('FlyPyConfig.ini')
 if config['es']['local']:
     portApi = config['es']['esURL'] + "/airports/"
 else:
-    portApi = config['es']['esClusterURL'] + "/airports"
+    portApi = config['es']['esClusterURL'] + "/airports/"
 
 
 class Airport:

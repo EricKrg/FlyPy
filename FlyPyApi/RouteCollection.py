@@ -10,7 +10,7 @@ config.read('FlyPyConfig.ini')
 if config['es']['local']:
     conApi = config['es']['esURL'] + "/routes/"
 else:
-    conApi = config['es']['esClusterURL'] + "/routes"
+    conApi = config['es']['esClusterURL'] + "/routes/"
 
 class RouteCollection:
     # an airport can have multiple connection going in out
