@@ -71,16 +71,16 @@ export class HomeComponent implements OnInit {
 
     // longest route
     this.dataFetcher.longestCon.subscribe((res: Connection) => {
-      this.connectionList.push(res)
+      let conList: Connection[] = [];
       this.compDist = this.compDist + res.distance
-      this.dataFetcher.connectionResponse.emit(this.connectionList)
+      this.dataFetcher.connectionResponse.emit(conList)
     })
     // shortest route
     this.dataFetcher.shortestCon.subscribe((res: Connection) => {
-      console.log(res)
-      this.connectionList.push(res)
+      let conList: Connection[] = [];
+      conList.push(res)
       this.compDist = this.compDist + res.distance
-      this.dataFetcher.connectionResponse.emit(this.connectionList)
+      this.dataFetcher.connectionResponse.emit(conList)
     })
 
     // tracking 
