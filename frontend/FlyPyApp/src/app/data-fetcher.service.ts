@@ -64,7 +64,7 @@ export class DataFetcherService {
   requester(url: string, emitter: EventEmitter<any>) {
     return this.http.get("/api/"+url).pipe(
       map(res => res as JSON)
-    ).subscribe((res) => emitter.emit(res) )
+    ).subscribe((res) => emitter.emit(res), error1 => alert("sorry something went wrong :(") )
   }
 
 

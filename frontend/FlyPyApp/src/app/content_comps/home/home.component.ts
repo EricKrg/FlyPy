@@ -155,7 +155,10 @@ export class HomeComponent implements OnInit {
       }
       this.dataFetcher.connectionResponse.emit(this.connectionList)
       this.isLoading = false;
-    })
+    }, error1 => {
+      alert("sorry something went wrong :(")
+      this.isLoading = false;
+    });
   }
   getWorldTour() {
     this.compDist = 0
@@ -174,7 +177,10 @@ export class HomeComponent implements OnInit {
       this.end = this.start
       this.dataFetcher.connectionResponse.emit(this.connectionList)
       this.isLoading = false;
-    })
+    },error1 => {
+      alert("sorry something went wrong :(")
+      this.isLoading = false;
+    });
   }
   longestClick() {
     this.compDist = 0
