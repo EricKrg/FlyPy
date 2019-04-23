@@ -3,9 +3,14 @@ import FlyPyApi
 import requests
 import json
 import math
+import configparser
 
-conApi = 'http://es01:9200/routes/'
-
+config = configparser.ConfigParser()
+config.read('FlyPyConfig.ini')
+if config['es']['local']:
+    conApi = config['es']['esURL'] + "/routes/"
+else:
+    conApi = config['es']['esClusterURL'] + "/routes/"
 
 class Connection:
     def __init__(self, start: str, end: str):

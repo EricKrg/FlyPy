@@ -2,13 +2,18 @@ import FlyPyApi
 import requests
 import json
 import re
+import configparser
 
-from collections import OrderedDict
+config = configparser.ConfigParser()
+config.read('FlyPyConfig.ini')
+if config['es']['local']:
+    portApi = config['es']['esURL'] + "/airports/"
+else:
+    portApi = config['es']['esClusterURL'] + "/airports"
 
-portApi = "http://es01:9200/airports/"  # move this to config file
 
 class Airport:
-    def __init__(self,default='',**kwargs):
+    def __init__(self,default='', **kwargs):
         self.airportID= ''
         self.name=''
         self.city= ''
@@ -101,7 +106,7 @@ class Airport:
 
 if __name__ == "__main__":
     d = Airport(default="Frankfurt")
-    ld = d.all_out().longestFlight()
+    ld = d.all_out(heavy=True).longestFlight()
     #jsonLD=ld.serialze_to_json()
     #print(jsonLD)
     testPort = Airport(IATA="EWR")

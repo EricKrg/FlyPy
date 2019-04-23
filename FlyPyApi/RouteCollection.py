@@ -3,8 +3,14 @@ from FlyPyApi import Airport, Connection
 
 import requests
 import json
+import configparser
 
-conApi = 'http://es01:9200/routes/'
+config = configparser.ConfigParser()
+config.read('FlyPyConfig.ini')
+if config['es']['local']:
+    conApi = config['es']['esURL'] + "/routes/"
+else:
+    conApi = config['es']['esClusterURL'] + "/routes"
 
 class RouteCollection:
     # an airport can have multiple connection going in out

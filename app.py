@@ -40,7 +40,6 @@ class Airports(Resource):
             return {'message': 'oops something went wrong'}, 404
 
 
-
 class Connection(Resource):
     # todo
     #   - catch bad request, missing start or end...
@@ -64,6 +63,7 @@ class WorldTour(Resource):
             t = fly.Trip()
             #t.getRoundTrip(start)
             t.getLiteRoundTrip(start)
+            t.getTraveltime()
             return  t.serialize_to_json(), 200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
@@ -82,6 +82,7 @@ class AllCon(Resource):
         except Exception:
             return {'message': 'oops something went wrong'}, 404
 
+
 class Longest(Resource):
     def get(self, name: str):
         try:
@@ -91,6 +92,7 @@ class Longest(Resource):
         except Exception:
             return {'message': 'oops something went wrong'}, 404
 
+
 class Shortest(Resource):
     def get(self, name: str):
         try:
@@ -99,6 +101,7 @@ class Shortest(Resource):
             return res.serialze_to_json(),200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
+
 
 class FlightTracker(Resource):
     def get(self):

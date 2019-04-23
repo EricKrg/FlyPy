@@ -1,4 +1,4 @@
-__all__ = ["Connection", "Airport", "Airplane", "RouteCollection","Trip", "AirportCollection", "FlightTracker"]
+__all__ = ["Connection", "Airport", "Airplane", "RouteCollection", "Trip", "AirportCollection", "FlightTracker"]
 
 
 from .Airplane import Airplane
