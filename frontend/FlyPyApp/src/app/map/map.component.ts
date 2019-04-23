@@ -60,8 +60,6 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    console.log("map init")
     // inital map creation
     this.map = this.map = map('map', {
       center: [52.5, 13.4],
@@ -81,7 +79,6 @@ export class MapComponent implements OnInit {
     });
 
     this.datafetcher.removeEmitter.subscribe((res) => {
-      console.log("remove")
       this.geojsonLayers.clearLayers()
       this.tracker.clearLayers()
     })
@@ -98,7 +95,7 @@ export class MapComponent implements OnInit {
       portCircle.addTo(this.geojsonLayers)    
     })
 
-    this.datafetcher.hoverPos.subscribe((res: Port) => {
+    this.datafetcher.hoverPos.subscribe((res: any) => {
       this.map.setView([res.lat,res.lon], 12)   
     })
 
@@ -153,11 +150,12 @@ export class MapComponent implements OnInit {
         polyline.addTo(this.geojsonLayers);
         portCircle.addTo(this.geojsonLayers)
       }
+      this.map.setView([0,0], 3)
       this.geojsonLayers.addTo(this.map)
     })
 
     //Flighttracker
-    this.datafetcher.trackPlanes.subscribe((res:Plane[]) => {
+    this.datafetcher.trackPlanes.subscribe((res:any[]) => {
       this.tracker.clearLayers()
       for(const p of res){
         let planeCircle = circle([p.lat,p.lon], { color: 'black',  radius: 500}).bindPopup("<b>" +p.flightNr + "</b> " + p.status + "<br>" + "Alt.: " + p.alt) 

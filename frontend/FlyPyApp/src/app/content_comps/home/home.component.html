@@ -20,18 +20,29 @@
           <span>{{activePort.continent}}, {{activePort.country}}, {{activePort.city}}</span>
           <br>
           <div class="btn-group">
-            <button type="button" class="btn badge badge-dark" (click)="allOut(activePort.IATA)">All Connections</button>
-            <button type="button" class="btn badge badge-primary" (click) = "longestClick()">longest</button>
-            <button type="button" class="btn badge badge-success" (click) = "shortestClick()">shortest</button>
+            <button type="button" class="btn badge badge-dark" (click)="allOut(activePort.IATA)">All
+              Connections</button>
+            <button type="button" class="btn badge badge-primary" (click)="longestClick()">longest</button>
+            <button type="button" class="btn badge badge-success" (click)="shortestClick()">shortest</button>
             <br>
           </div>
         </blockquote>
         <blockquote *ngIf="planeList.length != 0" class="twitter-tweet w-100">
           Available Flights: {{tempStart}} to {{tempEnd}}<br>
-          <span *ngFor="let p of planeList; let j = index" class="badge badge-warning" (mouseenter)="mouseOver(p)">{{p.flightNr}}</span>
+          <span *ngFor="let p of planeList; let j = index" class="badge badge-warning"
+            (mouseenter)="mouseOver(p)">{{p.flightNr}}</span>
+        </blockquote>
+        <blockquote *ngIf="connectionList.length != 0" class="twitter-tweet w-100">
+          <span> Traveltime estimation:</span><hr>
+          Local time at <span style="color: brown">{{activePort.IATA}} </span>:
+           <i style="font-weight: normal"> {{timetable.start_time}} </i><br>
+          Local time at <span style="color: brown">{{end}} </span>: 
+          <i style="font-weight: normal">{{timetable.end_time}} </i><br>
+          <span class="badge badge-info" style="font-size: 100%" > <b style="color:antiquewhite">Total time spent: </b> {{timetable.total_time}} h</span>
+          <span class="badge badge-danger" style="font-size: 100%"> <b style="color:antiquewhite">waiting time spent: </b> {{timetable.waiting_time}} h</span>
         </blockquote>
         <blockquote class="twitter-tweet w-100 scroll">
-          <span>Search Connection: </span> <br>
+          <span>Search Connection: </span><hr>
           <div class="input-group mb-3">
             <input [(ngModel)]="end" type="text" class="form-control" placeholder="to: DUB"
               aria-label="Example text with button addon" aria-describedby="button-addon1">
@@ -42,14 +53,13 @@
           <button type="button" class="btn btn-sm btn-info" style="margin:0" (click)="getWorldTour()">WorldTour</button>
           <hr>
           <div class="sk-rotating-plane" *ngIf="isLoading"></div>
-          <blockquote *ngFor="let el of connectionList; let i = index" class="twitter-tweet w-100 scroll" 
-          [ngStyle]="{backgroundColor: hover==true  ? 'lightgrey' : 'black' }"
-            style="color: whitesmoke"
-            (click) ="getTracking(el.sourceAirport.IATA, el.destinationAirport.IATA)">
+          <blockquote *ngFor="let el of connectionList; let i = index" class="twitter-tweet w-100 scroll"
+            [ngStyle]="{backgroundColor: hover==true  ? 'lightgrey' : 'black' }" style="color: whitesmoke"
+            (click)="getTracking(el.sourceAirport.IATA, el.destinationAirport.IATA)">
             FROM: {{el.sourceAirport.name}} <br>
             TO: {{el.destinationAirport.name}} <br>
             FLOWN-BY: {{el.airline}} <br>
-            DISTANCE: {{el.distance}} 
+            DISTANCE: {{el.distance}}
             <progress role="progressbar" class="progress-bar bg-dark" value="{{(el.distance/compDist)*100}}" max="100">
             </progress>
           </blockquote>

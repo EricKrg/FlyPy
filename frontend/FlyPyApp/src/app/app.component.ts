@@ -17,9 +17,14 @@ export class AppComponent {
   title = 'FlyPy';
 
   searchPort(searchString: string) {
+    let reg: RegExp = RegExp('[0-9]')
+    if(reg.test(searchString) && searchString.length > 4){
+      const url = "/tracker?fnr=" + searchString;
+      this.dataFetcher.requester(url, this.dataFetcher.trackerResponse)
+    } else {
     this.dataFetcher.findPorts(searchString).subscribe((res: exPort) => {
-      console.log(res)
       this.dataFetcher.activePos.emit(res)
     })
+  }
   }
 }
