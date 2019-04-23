@@ -6,7 +6,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('FlyPyConfig.ini')
-if config['es']['local']:
+if config['es']['local'] == 'y':
     portApi = config['es']['esURL'] + "/airports/"
 else:
     portApi = config['es']['esClusterURL'] + "/airports/"

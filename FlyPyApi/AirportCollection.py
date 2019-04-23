@@ -2,12 +2,11 @@
 import requests
 import json
 import re
-import FlyPyApi
 import configparser
 
 config = configparser.ConfigParser()
 config.read('FlyPyConfig.ini')
-if config['es']['local']:
+if config['es']['local'] == 'y':
     portApi = config['es']['esURL'] + "/airports/_search?size=10000"
 else:
     portApi = config['es']['esClusterURL'] + "/airports/_search?size=10000"
