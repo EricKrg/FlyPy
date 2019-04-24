@@ -13,8 +13,8 @@ to do
 
 <i>press all Airports button</i>
 
-![](screens/Selection_011.png)
-<i> Search for Frankfurt Airport by City name</i>
+![](screens/Selection_022.png)
+<i> All Airports</i>
 
 
 #### Search
@@ -27,7 +27,7 @@ to do
 If a Airport is found, the Airport Information is displayed in the top Container on the right sidebar and Airport specific features can be accessed.
 
 ![](screens/Selection_010.png)
-<i> Search for Frankfurt Airport by City name</i>
+<i> Search for Airport by City name (Frankfurt)</i>
 
 - search a **Flight** <i>by typing in searchbar</i>
     - by FlightNr-Iata i.e. <i>LH454</i>
