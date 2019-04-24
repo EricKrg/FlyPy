@@ -18,12 +18,13 @@ class RouteCollection:
     #   - large connect collection
     #   - filter collection
 
-    def __init__(self, iata: str, is_source: bool, heavy = False):
+    def __init__(self, iata: str, is_source: bool, heavy=False, trans=0):
 
         #self.airport :Airport = Airport(IATA=iata)
         self.connectionSet = []  # light collection for searching
         self.connectionDict = {}
         self.heavy = heavy
+        self.transit = trans
 
         searchterm = "sourceAirport" if is_source else "destinationAirport"
         searchBody = {
@@ -51,9 +52,24 @@ class RouteCollection:
                 self.connectionSet.append(con_dict['sourceAirport'])
         self.connectionSet = set(self.connectionSet)
 
+        if self.transit > 0:
+            all = []
+            for p in self.connectionSet:
+                all.extend(RouteCollection(p,is_source=True,trans=self.transit-1).connectionSet)
+                all = list(set(all))
+            self.connectionSet = all
         if self.heavy:
-            for c in self.connectionSet:
-                self.connectionDict[c] = Connection(iata,c)
+            if self.transit > 0:
+                home = Airport(IATA=iata)
+                for c in self.connectionSet:
+                    con = Connection(iata, c, empty=self.transit > 0)
+                    con.destinationAirport = Airport(IATA=c)
+                    con.sourceAirport = home
+                    self.connectionDict[c] = con
+            else:
+                for c in self.connectionSet:
+                    self.connectionDict[c] = Connection(iata, c, empty=self.transit > 0)
+
 
     def search(self, searchIATA):
         try:
@@ -91,6 +107,7 @@ class RouteCollection:
 
 
 if __name__ == "__main__":
+    c = RouteCollection("ERF",is_source=True,heavy=True,trans=1)
     import time
     start = time.time()
     coll = RouteCollection("JFK", True)

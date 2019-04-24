@@ -13,40 +13,40 @@ else:
     conApi = config['es']['esClusterURL'] + "/routes/"
 
 class Connection:
-    def __init__(self, start: str, end: str):
+    def __init__(self, start: str = '', end: str= '', empty = False):
         # a connection route could be flown by multiple airlines with diffrent equip
         self.airline = []
         self.sourceAirport = ''  # FlyPyApi.Airport(IATA=start)
         self.destinationAirport = ''  # FlyPyApi.Airport(IATA=end)
         self.equipment = []
-
-        try:
-            searchBody = {
-                      "size": 1000,
-                      "query": {
-                        "bool": {
-                          "must": [
-                            { "term": { "sourceAirport.keyword":start }},
-                            { "term": { "destinationAirport.keyword": end }}
-                          ]
+        if not empty:
+            try:
+                searchBody = {
+                          "size": 1000,
+                          "query": {
+                            "bool": {
+                              "must": [
+                                { "term": { "sourceAirport.keyword":start }},
+                                { "term": { "destinationAirport.keyword": end }}
+                              ]
+                            }
+                          }
                         }
-                      }
-                    }
-            req = requests.post(conApi + '_search', json=searchBody)
-            json_res = json.loads(req.content)
-            hits = json_res.get('hits').get('hits')
-            for connect in hits:
-                con_dict = connect.get('_source')
-                self.sourceAirport = con_dict['sourceAirport']
-                self.destinationAirport = con_dict['destinationAirport']
-                self.airline.append(con_dict['airline'])
-                self.equipment.append(con_dict['equipment'])
-        except ConnectionError:
-            print("no connection to elastic search")
-        self.sourceAirport = FlyPyApi.Airport(IATA=self.sourceAirport)
-        self.destinationAirport = FlyPyApi.Airport(IATA=self.destinationAirport)
-        self.distance = self.getDistance()
-        self.direction = self.getDirection()
+                req = requests.post(conApi + '_search', json=searchBody)
+                json_res = json.loads(req.content)
+                hits = json_res.get('hits').get('hits')
+                for connect in hits:
+                    con_dict = connect.get('_source')
+                    self.sourceAirport = con_dict['sourceAirport']
+                    self.destinationAirport = con_dict['destinationAirport']
+                    self.airline.append(con_dict['airline'])
+                    self.equipment.append(con_dict['equipment'])
+            except ConnectionError:
+                print("no connection to elastic search")
+            self.sourceAirport = FlyPyApi.Airport(IATA=self.sourceAirport)
+            self.destinationAirport = FlyPyApi.Airport(IATA=self.destinationAirport)
+            self.distance = self.getDistance()
+            self.direction = self.getDirection()
 
     def getGeom(self):
         return self.sourceAirport.getCoords(), self.destinationAirport.getCoords()

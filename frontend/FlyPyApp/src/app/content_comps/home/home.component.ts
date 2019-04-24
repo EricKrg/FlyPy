@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataFetcherService } from 'src/app/data-fetcher.service';
 import { LocationData } from 'src/app/shared/locationData';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { TouchSequence } from 'selenium-webdriver';
 
 export class Port {
   constructor(public name: String,
@@ -55,10 +56,13 @@ export class HomeComponent implements OnInit {
   tempEnd: string = '';
   compDist: number = 0;
   isLoading = false;
+  isConLoading = false;
   connectionList: Connection[] = [];
   activePort: exPort;
   planeList: Plane[] = [];
   isConnection: boolean = false
+  allto: string = '';
+  trans: number = 0;
   constructor(
     private dataFetcher: DataFetcherService
   ) { }
@@ -104,6 +108,7 @@ export class HomeComponent implements OnInit {
       }
       
     })
+    this.dataFetcher.allOutResponse.subscribe(() => this.isConLoading = false)
   }
 
   allPortsClick() {
@@ -141,7 +146,14 @@ export class HomeComponent implements OnInit {
 
   allOut(iata: string) {
     this.connectionList = []
-    let url = "/allcon/" + this.activePort.IATA + "?goingin=False"
+    let url = "/allcon/" + this.activePort.IATA + "?goingin=False&trans="+ this.trans
+    this.isConLoading = true
+    this.dataFetcher.requester(url, this.dataFetcher.allOutResponse)
+  }
+  allOutTo(iata: string) {
+    this.connectionList = []
+    let url = "/allconto/" + this.activePort.IATA + "?to="+this.allto
+    this.isConLoading = true
     this.dataFetcher.requester(url, this.dataFetcher.allOutResponse)
   }
   getCon() {

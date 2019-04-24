@@ -73,20 +73,20 @@ class Airport:
                  print("Airport: not found {}:{}".format(key,value))
 
 
-    def all_in(self, heavy=False) :
-        return FlyPyApi.RouteCollection(self.IATA, is_source=False, heavy=heavy)
+    def all_in(self, heavy=False, trans=0) :
+        return FlyPyApi.RouteCollection(self.IATA, is_source=False, heavy=heavy, trans=trans)
 
-    def all_out(self,heavy=False):
-        return FlyPyApi.RouteCollection(self.IATA,is_source=True, heavy=heavy)
+    def all_out(self,heavy=False, trans=0):
+        return FlyPyApi.RouteCollection(self.IATA,is_source=True, heavy=heavy, trans=trans)
 
     def all_out_to(self, to:str):
         all = self.all_out()
-        port_list = []
+        con_list = []
         for a in all.connectionSet:
             port = Airport(IATA = a)
             if port.city == to or port.country == to:
-                port_list.append(port)
-        return port_list
+                con_list.append(FlyPyApi.Connection(self.IATA,a))
+        return con_list
 
     def getContinent(self):
         return re.sub('\/.*', '', self.tz)
@@ -106,15 +106,16 @@ class Airport:
 
 if __name__ == "__main__":
     d = Airport(default="Frankfurt")
-    ld = d.all_out(heavy=True).longestFlight()
+    #ld = d.all_out(heavy=True).longestFlight()
     #jsonLD=ld.serialze_to_json()
     #print(jsonLD)
     testPort = Airport(IATA="EWR")
-    port2 = Airport(name="Madang Airport")
-    port = Airport(country="Germany")
+    #port2 = Airport(name="Madang Airport")
+    #port = Airport(country="Germany")
 
     all = testPort.all_in()
-    testPort.all_out_to(to="Berlin")
+    to = testPort.all_out_to(to="Germany")
+
     port2 = Airport(name="Madang Airport")
 
 

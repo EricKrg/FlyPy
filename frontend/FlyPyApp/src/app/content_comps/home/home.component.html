@@ -20,12 +20,20 @@
           <span>{{activePort.continent}}, {{activePort.country}}, {{activePort.city}}</span>
           <br>
           <div class="btn-group">
-            <button type="button" class="btn badge badge-dark" (click)="allOut(activePort.IATA)">All
-              Connections</button>
             <button type="button" class="btn badge badge-primary" (click)="longestClick()">longest</button>
             <button type="button" class="btn badge badge-success" (click)="shortestClick()">shortest</button>
             <br>
           </div>
+          <div class="input-group mb-3">
+            <button type="button" class="btn badge badge-dark" style="margin:0" (click)="allOutTo(activePort.IATA)">All connections to</button>
+            <input [(ngModel)]="allto" class="form-control"
+              aria-label="Example text with button addon" aria-describedby="button-addon1"> <br>
+            <button type="button" class="btn badge badge-dark" style="margin:0" (click)="allOut(activePort.IATA)">All
+                Connections</button>
+            <input [(ngModel)]="trans" class="form-control w-30" step="1" max="2" min="0" type="number"
+                aria-label="Example text with button addon" aria-describedby="button-addon1">
+          </div>
+          <div class="sk-rotating-plane" *ngIf="isConLoading"></div>
         </blockquote>
         <blockquote *ngIf="planeList.length != 0" class="twitter-tweet w-100">
           Available Flights: {{tempStart}} to {{tempEnd}}<br>

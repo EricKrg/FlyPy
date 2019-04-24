@@ -75,11 +75,25 @@ class AllCon(Resource):
         try:
             port = fly.Airport(IATA=name)
             is_in = request.args.get('goingin')
+            trans = int(request.args.get('trans'))
             if is_in:
-                res = port.all_in(heavy=True)
+                res = port.all_in(heavy=True, trans=trans)
             else:
-                res = port.all_out(heavy=True)
-            return res.serialize_to_json()
+                res = port.all_out(heavy=True, trans=trans)
+            return res.serialize_to_json(), 200
+        except Exception:
+            return {'message': 'oops something went wrong'}, 404
+
+class AllConTo(Resource):
+    def get(self, name: str):
+        try:
+            port = fly.Airport(IATA=name)
+            to = request.args.get('to')
+            res = port.all_out_to(to)
+            res_json = {}
+            for p in res:
+                res_json[p.destinationAirport.IATA] = p.serialze_to_json()
+            return res_json, 200
         except Exception:
             return {'message': 'oops something went wrong'}, 404
 
@@ -126,6 +140,7 @@ class FlightTracker(Resource):
 api.add_resource(Airport, '/airport/<string:name>')  # http://localhost:5000/item/Smartphone
 api.add_resource(Connection, '/connect')
 api.add_resource(AllCon, '/allcon/<string:name>')
+api.add_resource(AllConTo, '/allconto/<string:name>')
 api.add_resource(WorldTour, '/aroundtheworld/<string:start>')
 api.add_resource(Airports,'/allairports')
 api.add_resource(Longest,'/connect/longest/<string:name>')
