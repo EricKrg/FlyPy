@@ -5,7 +5,7 @@ import math
 import random
 import datetime
 import pytz
-
+from collections import deque
 
 class Trip:
     def __init__(self):
@@ -17,7 +17,7 @@ class Trip:
     def connectionSearch(self, start, end):
         listPort = Airport(IATA=start).all_out()
         finList = []; item = None
-        iterate = list(listPort.connectionSet)
+        iterate = deque(listPort.connectionSet)
 
         if listPort.search(end):
             print("direkt")

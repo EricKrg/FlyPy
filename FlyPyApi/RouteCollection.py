@@ -4,6 +4,8 @@ from FlyPyApi import Airport, Connection
 import requests
 import json
 import configparser
+from collections import deque
+
 
 config = configparser.ConfigParser()
 config.read('FlyPyConfig.ini')
@@ -42,6 +44,7 @@ class RouteCollection:
         hits = json_res.get('hits').get('hits')
 
         for con in hits:
+
             con_dict = con.get('_source')
             if is_source:
                 if con_dict['destinationAirport'] in self.connectionSet: continue  # dont do double work
@@ -53,11 +56,10 @@ class RouteCollection:
         self.connectionSet = set(self.connectionSet)
 
         if self.transit > 0:
-            all = []
+            all = deque([])
             for p in self.connectionSet:
-                if p in all: continue
                 all.extend(RouteCollection(p,is_source=True,trans=self.transit-1).connectionSet)
-                all = list(set(all))
+                all = deque(set(all))
             self.connectionSet = all
         if self.heavy:
             if self.transit > 0:
@@ -108,12 +110,13 @@ class RouteCollection:
 
 
 if __name__ == "__main__":
-    c = RouteCollection("ERF",is_source=True,heavy=True,trans=1)
     import time
     start = time.time()
-    coll = RouteCollection("JFK", True)
+    c = RouteCollection("ERF",is_source=True,heavy=True,trans=1)
     end = time.time()
     print(end - start)
+    coll = RouteCollection("JFK", True)
+
     print(coll.longestFlight())
     print(coll.shortestFLight())
     coll.serialize_to_json()
