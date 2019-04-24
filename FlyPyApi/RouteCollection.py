@@ -55,6 +55,7 @@ class RouteCollection:
         if self.transit > 0:
             all = []
             for p in self.connectionSet:
+                if p in all: continue
                 all.extend(RouteCollection(p,is_source=True,trans=self.transit-1).connectionSet)
                 all = list(set(all))
             self.connectionSet = all
