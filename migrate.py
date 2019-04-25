@@ -1,6 +1,5 @@
 import requests
-from tqdm import tqdm
-
+import sys
 # static vars
 
 esApiUrl = 'http://localhost:9200'
@@ -88,14 +87,27 @@ airportFillMapping = {
             }
 
 # -----------------------------------------
+def progress(count, total, status=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+    sys.stdout.flush() 
+
+
 def resetIndex(route: str, Mapping: dict):
     if requests.get(esApiUrl + "/{}".format(route)).status_code == 200:
         requests.delete(esApiUrl + "/{}".format(route))
     requests.put(esApiUrl + "/{}".format(route), json=Mapping)
 
 def fillIndex(filePath: str, fillMapping: dict, indexName: str ):
+    num_lines = sum(1 for line in open(filePath))
     with open(filePath) as routes:
-        for e in tqdm(routes):
+        for i,e in enumerate(routes):
+            progress(i, num_lines, status="Filling the index {}".format(indexName))
             e_split = e.split(sep=',')
             remove = r"\N"
             if e_split[4] == remove:
@@ -103,7 +115,6 @@ def fillIndex(filePath: str, fillMapping: dict, indexName: str ):
             else:
                 fillMap = {i: str(e_split[k]).replace('"','') for k, i in enumerate(fillMapping.keys())}
                 res = requests.post(esApiUrl + "/{}/doc/".format(indexName), json=fillMap)
-
 
 if __name__ == "__main__":
     # AIRPORTS
