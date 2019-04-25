@@ -13,15 +13,15 @@
 
 ####
 
-1. Pull the reposetory from github
+1. Pull the repository from github
 2. Change the directory to the projects root (*the one with docker-compose.yml, migrate.py ...*)
 3. Start all containers with `sudo docker-compose up` , if this is done initally this may take a while  
     3.1 if you want to rebuild a single container do so with: `sudo docker-compose build --no-cache flask_app` or `sudo docker-compose build --no-cache nginx_app`  
-4. If step 3 was successfull you can check it be typing `http://localhost:5000/airport/CGN` or `http://localhost:4200`, `http://localhost:9200/_cat/indices?v` into you browser, if you get an response the application  is running and deployed but there is no data, it can work with.
-5. Migrating data to the application. Make sure you are still in the projects root, by executing `python3 migrate.py` the elastiic search index ist filled with data. It fills it with 6000 Airports and ~70000 flight-routes so the may take a while, but you only have to do this once.
+4. If step 3 was successfull you can check it be typing `http://localhost:5000/airport/CGN` or `http://localhost:4200`, `http://localhost:9200/_cat/indices?v` into your browser, if you get an response the application  is running and deployed but there is no data, it can work with.
+5. Migrating data to the application. Make sure you are still in the projects root, by executing `python3 migrate.py` the elastic search index ist filled with data. It fills it with 6000 Airports and ~70000 flight-routes so the may take a while, but you only have to do this once.
 6. If the elastic search index is filled you can use the application by visiting localhost:4200 in your browser
 
-*note the ports 5000 4200 9200 and 9300 are used by this application, so make sure they are not allready in use*
+*note the ports 5000 4200 9200 and 9300 are used by this application, so make sure that these are not allready in use*
 
 
 ## Features
